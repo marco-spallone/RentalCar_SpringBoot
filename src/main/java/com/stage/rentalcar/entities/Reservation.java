@@ -26,7 +26,7 @@ public class Reservation implements Serializable {
     private boolean confirmed;
 
     @ManyToOne
-    @JoinColumn(name="userId", referencedColumnName = "userId", nullable = false)
+    @JoinColumn(name="idUser", referencedColumnName = "userId", nullable = false)
     private User user;
 
     @ManyToOne

@@ -1,4 +1,4 @@
-package com.stage.rentalcar_springboot;
+package com.stage.rentalcar;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

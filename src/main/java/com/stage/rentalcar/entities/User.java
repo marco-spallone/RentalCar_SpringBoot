@@ -16,10 +16,10 @@ public class User implements Serializable {
     @Id
     @Column(name = "userId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer userId;
 
     @Column(name = "name")
-    private String nome;
+    private String name;
 
     @Column(name = "surname")
     private String surname;
