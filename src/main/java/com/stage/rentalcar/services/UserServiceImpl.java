@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void insUser(User user) {
+    public void insOrUpUser(User user) {
         userRepository.saveAndFlush(user);
     }
 

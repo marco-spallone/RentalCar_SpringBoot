@@ -1,7 +1,9 @@
 package com.stage.rentalcar.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,7 +28,7 @@ public class Reservation implements Serializable {
     private boolean confirmed;
 
     @ManyToOne
-    @JoinColumn(name="idUser", referencedColumnName = "userId", nullable = false)
+    @JoinColumn(name="userId", referencedColumnName = "userId")
     private User user;
 
     @ManyToOne

@@ -10,11 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("users")
 public class UserController {
 
     private final UserService userService;
@@ -26,9 +25,6 @@ public class UserController {
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> users = userService.getUsers();
-        Logger logger = LoggerFactory.getLogger(UserController.class);
-
-
         if(users.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -44,9 +40,19 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/insert", produces = "application/json")
-    public ResponseEntity<User> insertUser(@RequestBody User user){
-        userService.insUser(user);
-        return new ResponseEntity<User>(new HttpHeaders(), HttpStatus.CREATED);
+    @PostMapping(value = "/edit", produces = "application/json")
+    public ResponseEntity<User> insertOrUpdateUser(@RequestBody User user){
+        userService.insOrUpUser(user);
+        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id){
+        User user = userService.getUserById(id);
+        if(user==null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        userService.delUser(user);
+        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 }
