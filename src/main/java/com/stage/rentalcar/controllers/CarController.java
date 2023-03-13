@@ -1,8 +1,9 @@
 package com.stage.rentalcar.controllers;
 
-import com.stage.rentalcar.entities.Car;
-import com.stage.rentalcar.entities.User;
+import com.stage.rentalcar.dto.CarDTO;
+import com.stage.rentalcar.mapper.CarMapper;
 import com.stage.rentalcar.services.CarService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,42 +13,30 @@ import java.util.List;
 
 @RestController
 @RequestMapping("cars")
+@RequiredArgsConstructor
 public class CarController {
     private final CarService carService;
-
-    public CarController(CarService carService) { this.carService=carService; }
+    private final CarMapper carMapper;
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<Car>> getAllCars(){
-        List<Car> cars = carService.getCars();
-        if(cars.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(cars, HttpStatus.OK);
+    public ResponseEntity<List<CarDTO>> getAllCars(){
+        return new ResponseEntity<>(carMapper.getCarsDTO(carService.getCars()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<Car> getCarById(@PathVariable("id") Integer id){
-        Car car = carService.getCarById(id);
-        if(car==null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(car, HttpStatus.OK);
+    public ResponseEntity<CarDTO> getCarById(@PathVariable("id") Integer id){
+        return new ResponseEntity<>(carMapper.fromEntitytoDTO(carService.getCarById(id)), HttpStatus.OK);
     }
 
     @PostMapping(value = "/edit", produces = "application/json")
-    public ResponseEntity<User> insertOrUpdateCar(@RequestBody Car car){
-        carService.insOrUpCar(car);
+    public ResponseEntity<?> insertOrUpdateCar(@RequestBody CarDTO carDTO){
+        carService.insOrUpCar(carDTO);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<?> deleteCar(@PathVariable("id") Integer id){
-        Car car = carService.getCarById(id);
-        if(car==null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        carService.delCar(car);
+        carService.delCar(carService.getCarById(id));
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 }

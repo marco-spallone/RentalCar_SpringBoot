@@ -2,7 +2,6 @@ package com.stage.rentalcar.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -26,12 +25,11 @@ public class Reservation implements Serializable {
     @Column(name = "confirmed")
     private boolean confirmed;
 
-    @ManyToOne
-    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user", referencedColumnName = "id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="car", referencedColumnName = "id")
     private Car car;
 }

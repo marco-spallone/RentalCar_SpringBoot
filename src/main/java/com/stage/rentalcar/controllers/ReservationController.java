@@ -1,7 +1,6 @@
 package com.stage.rentalcar.controllers;
 
 import com.stage.rentalcar.dto.ReservationDTO;
-import com.stage.rentalcar.entities.Reservation;
 import com.stage.rentalcar.entities.User;
 import com.stage.rentalcar.mapper.ReservationMapper;
 import com.stage.rentalcar.services.ReservationService;
@@ -29,14 +28,14 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<ReservationDTO> getReservationsById(@PathVariable("id") Integer id){
+    public ResponseEntity<ReservationDTO> getReservationById(@PathVariable("id") Integer id){
         return new ResponseEntity<>(reservationService.getReservationById(id), HttpStatus.OK);
     }
 
     @PostMapping(value = "/edit", produces = "application/json")
     public ResponseEntity<?> insertOrUpdateReservation(@RequestBody ReservationDTO reservationDTO){
         reservationService.insOrUpReservation(reservationDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/delete/{id}")
