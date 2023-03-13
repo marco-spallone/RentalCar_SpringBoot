@@ -2,7 +2,6 @@ package com.stage.rentalcar.services;
 
 import com.stage.rentalcar.entities.Car;
 import com.stage.rentalcar.repository.CarRepository;
-import com.stage.rentalcar.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ public class CarServiceImpl implements CarService{
 
     @Override
     public Car getCarById(Integer id) {
-        return carRepository.findByCarId(id);
+        return carRepository.getById(id);
     }
 
     @Override

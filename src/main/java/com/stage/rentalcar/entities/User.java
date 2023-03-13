@@ -3,20 +3,21 @@ package com.stage.rentalcar.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 @Data
 public class User implements Serializable {
 
     @Id
-    @Column(name = "userId")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
@@ -24,7 +25,7 @@ public class User implements Serializable {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "isAdmin")
+    @Column(name = "is_admin")
     private boolean isAdmin;
 
     @Column(name = "username")

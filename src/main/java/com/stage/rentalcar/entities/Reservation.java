@@ -1,38 +1,37 @@
 package com.stage.rentalcar.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "Reservation")
+@Table(name = "reservation")
 @Data
 public class Reservation implements Serializable {
 
     @Id
-    @Column(name = "reservationId")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer reservationId;
+    private Integer id;
 
-    @Column(name = "startDate")
-    private Date startDate;
+    @Column(name = "start_date")
+    private LocalDate startDate;
 
-    @Column(name = "endDate")
-    private Date endDate;
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
     @Column(name = "confirmed")
     private boolean confirmed;
 
     @ManyToOne
-    @JoinColumn(name="userId", referencedColumnName = "userId")
+    @ToString.Exclude
+    @JoinColumn(name="user", referencedColumnName = "id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="carId", referencedColumnName = "carId")
+    @JoinColumn(name="car", referencedColumnName = "id")
     private Car car;
-
 }

@@ -1,11 +1,12 @@
 package com.stage.rentalcar.controllers;
 
-import com.stage.rentalcar.entities.Car;
+import com.stage.rentalcar.dto.ReservationDTO;
 import com.stage.rentalcar.entities.Reservation;
 import com.stage.rentalcar.entities.User;
-import com.stage.rentalcar.services.CarService;
+import com.stage.rentalcar.mapper.ReservationMapper;
 import com.stage.rentalcar.services.ReservationService;
 import com.stage.rentalcar.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,42 +16,32 @@ import java.util.List;
 
 @RestController
 @RequestMapping("reservations")
+@RequiredArgsConstructor
 public class ReservationController {
     private final ReservationService reservationService;
+    private final UserService userService;
+    private final ReservationMapper reservationMapper;
 
-    public ReservationController(ReservationService reservationService, UserService userService) { this.reservationService=reservationService;}
-
-    @GetMapping(produces = "application/json")
-    public ResponseEntity<List<Reservation>> getAllReservations(){
-        List<Reservation> reservations = reservationService.getReservations();
-        if(reservations.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    @GetMapping(value = "/user/{id}", produces = "application/json")                //PROVVISORIO, QUANDO SI HA L'UTENTE IN SESSIONE ELIMINARE PARAMETRO
+    public ResponseEntity<List<ReservationDTO>> getAllReservationsForUser(@PathVariable("id") Integer id){
+        User user = userService.getUserById(id);
+        return new ResponseEntity<>(reservationMapper.getReservationsDTO(reservationService.getReservationsForUser(user)), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<Reservation> getReservationsById(@PathVariable("id") Integer id){
-        Reservation reservation = reservationService.getReservationById(id);
-        if(reservation==null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(reservation, HttpStatus.OK);
+    public ResponseEntity<ReservationDTO> getReservationsById(@PathVariable("id") Integer id){
+        return new ResponseEntity<>(reservationService.getReservationById(id), HttpStatus.OK);
     }
 
     @PostMapping(value = "/edit", produces = "application/json")
-    public ResponseEntity<Reservation> insertOrUpdateReservation(@RequestBody Reservation reservation){
-        reservationService.insOrUpReservation(reservation);
-        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
+    public ResponseEntity<?> insertOrUpdateReservation(@RequestBody ReservationDTO reservationDTO){
+        reservationService.insOrUpReservation(reservationDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<?> deleteReservation(@PathVariable("id") Integer id){
-        Reservation reservation = reservationService.getReservationById(id);
-        if(reservation==null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        reservationService.delReservation(reservation);
+        reservationService.delReservation(id);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 }

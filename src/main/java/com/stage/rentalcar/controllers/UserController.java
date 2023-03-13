@@ -1,9 +1,8 @@
 package com.stage.rentalcar.controllers;
 
+import com.stage.rentalcar.dto.UserDTO;
 import com.stage.rentalcar.entities.User;
 import com.stage.rentalcar.services.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,8 +40,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/edit", produces = "application/json")
-    public ResponseEntity<User> insertOrUpdateUser(@RequestBody User user){
-        userService.insOrUpUser(user);
+    public ResponseEntity<?> insertOrUpdateUser(@RequestBody UserDTO userDTO){
+        userService.insOrUpUser(userDTO);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
     }
 
