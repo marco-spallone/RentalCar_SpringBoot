@@ -1,6 +1,7 @@
 package com.stage.rentalcar.controllers;
 
 import com.stage.rentalcar.dto.ReservationDTO;
+import com.stage.rentalcar.entities.Car;
 import com.stage.rentalcar.entities.User;
 import com.stage.rentalcar.mapper.ReservationMapper;
 import com.stage.rentalcar.services.ReservationService;
@@ -32,14 +33,31 @@ public class ReservationController {
         return new ResponseEntity<>(reservationService.getReservationById(id), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/edit", produces = "application/json")
-    public ResponseEntity<?> insertOrUpdateReservation(@RequestBody ReservationDTO reservationDTO){
+    @GetMapping(value = "/freeCars", produces = "application/json")
+    public ResponseEntity<List<Car>> getFreeCars(@RequestBody ReservationDTO reservationDTO) throws Exception {
+        return new ResponseEntity<>(reservationService.getFreeCars(reservationDTO), HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/insert", produces = "application/json")
+    public ResponseEntity<?> insOrUpReservation(@RequestBody ReservationDTO reservationDTO) {
         reservationService.insOrUpReservation(reservationDTO);
-        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping(value = "/approve/{id}", produces = "application/json")
+    public ResponseEntity<?> approveReservation(@PathVariable("id") Integer id){
+        reservationService.approveReservation(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping(value = "/decline/{id}", produces = "application/json")
+    public ResponseEntity<?> declineReservation(@PathVariable("id") Integer id){
+        reservationService.declineReservation(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<?> deleteReservation(@PathVariable("id") Integer id){
+    public ResponseEntity<?> deleteReservation(@PathVariable("id") Integer id) throws Exception {
         reservationService.delReservation(id);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }

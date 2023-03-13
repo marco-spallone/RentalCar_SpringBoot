@@ -1,5 +1,6 @@
 package com.stage.rentalcar.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,5 +34,6 @@ public class Car implements Serializable {
     private String plate;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car", orphanRemoval = true)
+    @JsonIgnore
     private List<Reservation> reservations = new ArrayList<>();
 }
