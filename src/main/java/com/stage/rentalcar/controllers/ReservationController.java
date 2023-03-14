@@ -1,8 +1,8 @@
 package com.stage.rentalcar.controllers;
 
 import com.stage.rentalcar.dto.ReservationDTO;
-import com.stage.rentalcar.entities.Car;
 import com.stage.rentalcar.entities.User;
+import com.stage.rentalcar.mapper.CarMapper;
 import com.stage.rentalcar.mapper.ReservationMapper;
 import com.stage.rentalcar.services.ReservationService;
 import com.stage.rentalcar.services.UserService;
@@ -21,6 +21,7 @@ public class ReservationController {
     private final ReservationService reservationService;
     private final UserService userService;
     private final ReservationMapper reservationMapper;
+    private final CarMapper carMapper;
 
     @GetMapping(value = "/user/{id}", produces = "application/json")                //PROVVISORIO, QUANDO SI HA L'UTENTE IN SESSIONE ELIMINARE PARAMETRO
     public ResponseEntity<List<ReservationDTO>> getAllReservationsForUser(@PathVariable("id") Integer id){
@@ -30,29 +31,24 @@ public class ReservationController {
 
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<ReservationDTO> getReservationById(@PathVariable("id") Integer id){
-        return new ResponseEntity<>(reservationService.getReservationById(id), HttpStatus.OK);
+        return new ResponseEntity<>(reservationService.getReservationDTOById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/freeCars", produces = "application/json")
-    public ResponseEntity<List<Car>> getFreeCars(@RequestBody ReservationDTO reservationDTO) throws Exception {
-        return new ResponseEntity<>(reservationService.getFreeCars(reservationDTO), HttpStatus.CREATED);
-    }
-
-    @PostMapping(value = "/insert", produces = "application/json")
+    @PostMapping(value = "/post-reservation", produces = "application/json")
     public ResponseEntity<?> insOrUpReservation(@RequestBody ReservationDTO reservationDTO) {
         reservationService.insOrUpReservation(reservationDTO);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping(value = "/approve/{id}", produces = "application/json")
     public ResponseEntity<?> approveReservation(@PathVariable("id") Integer id){
-        reservationService.approveReservation(id);
+        reservationService.updateReservation(id, true);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping(value = "/decline/{id}", produces = "application/json")
     public ResponseEntity<?> declineReservation(@PathVariable("id") Integer id){
-        reservationService.declineReservation(id);
+        reservationService.updateReservation(id, false);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

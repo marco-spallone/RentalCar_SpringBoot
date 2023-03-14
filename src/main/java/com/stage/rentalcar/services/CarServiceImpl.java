@@ -5,21 +5,23 @@ import com.stage.rentalcar.entities.Car;
 import com.stage.rentalcar.entities.Reservation;
 import com.stage.rentalcar.mapper.CarMapper;
 import com.stage.rentalcar.repository.CarRepository;
+import com.stage.rentalcar.specification.FreeCarSpecification;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CarServiceImpl implements CarService{
+public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
     private final CarMapper carMapper;
+
     @Override
     public List<Car> getCars() {
         return carRepository.findAll();
@@ -31,34 +33,30 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public List<Car> getFreeCars(List<Reservation> reservations) {
-        List<Car> free = getCars();
-        List<Car> alreadyReserved = new ArrayList<>();
-        for (Reservation r:reservations) {
-            alreadyReserved.add(r.getCar());
-        }
-        Iterator<Car> iterOnFree = free.iterator();
-        Iterator<Car> iterOnReserved = alreadyReserved.iterator();
-        while (iterOnFree.hasNext()) {
-            Car car1 = iterOnFree.next();
-            while (iterOnReserved.hasNext()) {
-                Car car2 = iterOnReserved.next();
-                if (car1.getId().equals(car2.getId())) {
-                    iterOnFree.remove();
-                    break;
-                }
-            }
-        }
-        return free;
+    public List<Car> getFreeCars(LocalDate start, LocalDate end) {
+        return carRepository.findAll(FreeCarSpecification.getFreeCars(start, end));
     }
 
     @Override
     public void insOrUpCar(CarDTO carDTO) {
-        carRepository.saveAndFlush(carMapper.fromDTOtoEntity(carDTO));
+        if (carDTO.getId() == null) {
+            carRepository.save(carMapper.fromDTOtoEntity(carDTO));
+        } else {
+            edit(carDTO);
+        }
     }
 
     @Override
-    public void delCar(Car car) {
-        carRepository.delete(car);
+    public void edit(CarDTO carDTO) {
+        if(getCarById(carDTO.getId())!=null){
+            carRepository.save(carMapper.fromDTOtoEntity(carDTO));
+        } else {
+            throw new RuntimeException("L'entità non esiste");
+        }
+    }
+
+    @Override
+    public void delCar(Integer id) {
+        carRepository.delete(carRepository.getById(id));
     }
 }

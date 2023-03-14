@@ -1,6 +1,7 @@
 package com.stage.rentalcar.controllers;
 
 import com.stage.rentalcar.dto.UserDTO;
+import com.stage.rentalcar.dto.UserDTONoPass;
 import com.stage.rentalcar.mapper.UserMapper;
 import com.stage.rentalcar.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,16 +23,16 @@ public class UserController {
 
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<UserDTO>> getAllUsers(){
-        return new ResponseEntity<>(userMapper.getUsersDTO(userService.getUsers()), HttpStatus.OK);
+    public ResponseEntity<List<UserDTONoPass>> getAllUsers(){
+        return new ResponseEntity<>(userMapper.getUsersDTO(userService.getCustomers()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Integer id){
-        return new ResponseEntity<>(userMapper.fromEntitytoDTO(userService.getUserById(id)), HttpStatus.OK);
+    public ResponseEntity<UserDTONoPass> getUserById(@PathVariable("id") Integer id){
+        return new ResponseEntity<>(userMapper.fromEntitytoDTONoPass(userService.getUserById(id)), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/edit", produces = "application/json")
+    @PostMapping(value = "/post-user", produces = "application/json")
     public ResponseEntity<?> insertOrUpdateUser(@RequestBody UserDTO userDTO){
         userService.insOrUpUser(userDTO);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
@@ -39,7 +40,7 @@ public class UserController {
 
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id){
-        userService.delUser(userService.getUserById(id));
+        userService.delUser(id);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.stage.rentalcar.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,9 +28,11 @@ public class Reservation implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user", referencedColumnName = "id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="car", referencedColumnName = "id")
+    @JsonIgnore
     private Car car;
 }

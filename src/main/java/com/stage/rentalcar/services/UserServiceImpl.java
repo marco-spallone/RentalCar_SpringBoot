@@ -19,8 +19,8 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public List<User> getCustomers() {
+        return userRepository.getUsersByIsAdmin(false);
     }
 
     @Override
@@ -30,11 +30,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void insOrUpUser(UserDTO userDTO) {
-        userRepository.saveAndFlush(userMapper.fromDTOtoEntity(userDTO));
+        userRepository.save(userMapper.fromDTOtoEntity(userDTO));
     }
 
     @Override
-    public void delUser(User user) {
-        userRepository.delete(user);
+    public void delUser(Integer id) {
+        userRepository.delete(userRepository.getById(id));
     }
 }

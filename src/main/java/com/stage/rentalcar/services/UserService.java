@@ -6,8 +6,8 @@ import com.stage.rentalcar.entities.User;
 import java.util.List;
 
 public interface UserService {
-    List<User> getUsers();
+    List<User> getCustomers();
     User getUserById(Integer id);
     void insOrUpUser(UserDTO userDTO);
-    void delUser(User user);
+    void delUser(Integer id);
 }

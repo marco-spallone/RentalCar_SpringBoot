@@ -8,6 +8,7 @@ import com.stage.rentalcar.mapper.ReservationMapper;
 import com.stage.rentalcar.repository.CarRepository;
 import com.stage.rentalcar.repository.ReservationRepository;
 import com.stage.rentalcar.repository.UserRepository;
+import com.stage.rentalcar.request.FreeCarRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public ReservationDTO getReservationById(Integer id) {
+    public ReservationDTO getReservationDTOById(Integer id) {
         return reservationMapper.fromEntitytoDTO(reservationRepository.getById(id));
     }
 
@@ -45,13 +46,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Car> getFreeCars(ReservationDTO reservationDTO) throws Exception {
-        long days = ChronoUnit.DAYS.between(LocalDate.now(), reservationDTO.getStartDate());
+    public List<Car> getFreeCars(FreeCarRequest freeCarRequest){
+        long days = ChronoUnit.DAYS.between(LocalDate.now(), freeCarRequest.getStartDate());
         if(days>2){
-            List<Reservation> resBetweenDates = getReservationsBetweenDates(reservationDTO.getStartDate(), reservationDTO.getEndDate());
-            return carService.getFreeCars(resBetweenDates);
+            return carService.getFreeCars(freeCarRequest.getStartDate(), freeCarRequest.getEndDate());
         } else {
-            throw new Exception("Mancano meno di 2 giorni alla data di inizio.");
+            throw new RuntimeException("Mancano meno di 2 giorni alla data di inizio.");
         }
     }
 
@@ -59,35 +59,24 @@ public class ReservationServiceImpl implements ReservationService {
     public void insOrUpReservation(ReservationDTO reservationDTO) {
         User user = userRepository.getById(reservationDTO.getUserId());
         Car car = carRepository.getById(reservationDTO.getCarId());
-        reservationRepository.saveAndFlush(reservationMapper.fromDTOtoEntity(reservationDTO, user, car));
+        reservationRepository.save(reservationMapper.fromDTOtoEntity(reservationDTO, user, car));
     }
 
     @Override
-    public void approveReservation(Integer id) {
-        ReservationDTO reservationDTO = getReservationById(id);
-        Reservation reservation = reservationMapper.fromDTOtoEntity(reservationDTO, userRepository.getById(reservationDTO.getUserId()),
-                                carRepository.getById(reservationDTO.getCarId()));
-        reservation.setConfirmed(true);
-        reservationRepository.saveAndFlush(reservation);
+    public void updateReservation(Integer id, boolean confirmed) {
+        Reservation reservation = reservationRepository.getById(id);
+        reservation.setConfirmed(confirmed);
+        reservationRepository.save(reservation);
     }
 
     @Override
-    public void declineReservation(Integer id) {
-        ReservationDTO reservationDTO = getReservationById(id);
-        Reservation reservation = reservationMapper.fromDTOtoEntity(reservationDTO, userRepository.getById(reservationDTO.getUserId()),
-                carRepository.getById(reservationDTO.getCarId()));
-        reservation.setConfirmed(false);
-        reservationRepository.saveAndFlush(reservation);
-    }
-
-    @Override
-    public void delReservation(Integer id) throws Exception {
-        ReservationDTO reservationDTO = getReservationById(id);
+    public void delReservation(Integer id) {
+        ReservationDTO reservationDTO = getReservationDTOById(id);
         long days = ChronoUnit.DAYS.between(LocalDate.now(), reservationDTO.getStartDate());
         if(days>2){
             reservationRepository.deleteById(id);
         } else {
-            throw new Exception("Mancano meno di due giorni alla data di inizio.");
+            throw new RuntimeException("Mancano meno di due giorni alla data di inizio.");
         }
     }
 }
