@@ -12,7 +12,6 @@ import java.util.List;
 public interface ReservationService {
     List<Reservation> getReservationsForUser(User user);
     ReservationDTO getReservationDTOById(Integer id);
-    List<Reservation> getReservationsBetweenDates(LocalDate start, LocalDate end);
     List<Car> getFreeCars(FreeCarRequest freeCarRequest);
     void insOrUpReservation(ReservationDTO reservationDTO);
     void updateReservation(Integer id, boolean confirmed);

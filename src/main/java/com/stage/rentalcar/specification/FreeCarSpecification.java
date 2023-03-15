@@ -2,24 +2,30 @@ package com.stage.rentalcar.specification;
 
 import com.stage.rentalcar.entities.Car;
 import com.stage.rentalcar.entities.Reservation;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
 public class FreeCarSpecification {
-    public static Specification<Car> getFreeCars(LocalDate start, LocalDate end){
-
-        return (root, query, criteriaBuilder) -> {
-            Join<Reservation, Car> tableJoin = root.join("reservations");
-            Predicate firstPredicate = criteriaBuilder.between(tableJoin.get("startDate"), start, end);
-            Predicate secondPredicate = criteriaBuilder.between(tableJoin.get("endDate"), start, end);
-            Predicate thirdPredicate = criteriaBuilder.and(criteriaBuilder.lessThanOrEqualTo(tableJoin.get("startDate"), start),
-                    criteriaBuilder.greaterThanOrEqualTo(tableJoin.get("endDate"), end));
-            query.distinct(true);
-            Predicate finalPredicate = criteriaBuilder.and(firstPredicate, secondPredicate, thirdPredicate);
-            return criteriaBuilder.not(finalPredicate);
+    public static Specification<Car> getFreeCars(LocalDate start, LocalDate end) {
+        return (root, query, builder) -> {
+            Subquery<Reservation> subquery = query.subquery(Reservation.class);
+            Root<Reservation> subqueryRoot = subquery.from(Reservation.class);
+            subquery.select(subqueryRoot.get("car").get("id"))
+                    .where(builder.or(
+                            builder.between(subqueryRoot.get("startDate"), start, end),
+                            builder.between(subqueryRoot.get("endDate"), start, end),
+                            builder.and(
+                                    builder.lessThanOrEqualTo(subqueryRoot.get("startDate"), start),
+                                    builder.greaterThanOrEqualTo(subqueryRoot.get("endDate"), end)
+                            )
+                    ));
+            subquery.distinct(true);
+            return builder.not(
+                    builder.in(root.get("id")).value(subquery)
+            );
         };
     }
 }

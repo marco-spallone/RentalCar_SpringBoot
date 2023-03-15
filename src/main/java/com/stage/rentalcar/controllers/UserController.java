@@ -23,23 +23,23 @@ public class UserController {
 
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<UserDTONoPass>> getAllUsers(){
+    public ResponseEntity<List<UserDTONoPass>> getAllUsers() {
         return new ResponseEntity<>(userMapper.getUsersDTO(userService.getCustomers()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<UserDTONoPass> getUserById(@PathVariable("id") Integer id){
+    public ResponseEntity<UserDTONoPass> getUserById(@PathVariable("id") Integer id) {
         return new ResponseEntity<>(userMapper.fromEntitytoDTONoPass(userService.getUserById(id)), HttpStatus.OK);
     }
 
     @PostMapping(value = "/post-user", produces = "application/json")
-    public ResponseEntity<?> insertOrUpdateUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<?> insertOrUpdateUser(@RequestBody UserDTO userDTO) {
         userService.insOrUpUser(userDTO);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id){
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id) {
         userService.delUser(id);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }

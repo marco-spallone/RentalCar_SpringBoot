@@ -41,14 +41,9 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> getReservationsBetweenDates(LocalDate start, LocalDate end) {
-        return reservationRepository.getReservationsBetweenDates(start, end);
-    }
-
-    @Override
-    public List<Car> getFreeCars(FreeCarRequest freeCarRequest){
+    public List<Car> getFreeCars(FreeCarRequest freeCarRequest) {
         long days = ChronoUnit.DAYS.between(LocalDate.now(), freeCarRequest.getStartDate());
-        if(days>2){
+        if (days > 2) {
             return carService.getFreeCars(freeCarRequest.getStartDate(), freeCarRequest.getEndDate());
         } else {
             throw new RuntimeException("Mancano meno di 2 giorni alla data di inizio.");
@@ -73,7 +68,7 @@ public class ReservationServiceImpl implements ReservationService {
     public void delReservation(Integer id) {
         ReservationDTO reservationDTO = getReservationDTOById(id);
         long days = ChronoUnit.DAYS.between(LocalDate.now(), reservationDTO.getStartDate());
-        if(days>2){
+        if (days > 2) {
             reservationRepository.deleteById(id);
         } else {
             throw new RuntimeException("Mancano meno di due giorni alla data di inizio.");

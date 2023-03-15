@@ -27,12 +27,12 @@ public class Reservation implements Serializable {
     private boolean confirmed;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user", referencedColumnName = "id")
+    @JoinColumn(name = "user", referencedColumnName = "id")
     @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="car", referencedColumnName = "id")
+    @JoinColumn(name = "car", referencedColumnName = "id")
     @JsonIgnore
     private Car car;
 }

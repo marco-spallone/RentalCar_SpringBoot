@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Component
 public class ReservationMapper {
 
-    public List<ReservationDTO> getReservationsDTO(List<Reservation> reservations){
+    public List<ReservationDTO> getReservationsDTO(List<Reservation> reservations) {
         return reservations.stream().map(this::fromEntitytoDTO).collect(Collectors.toList());
     }
 
@@ -27,7 +27,7 @@ public class ReservationMapper {
         return reservation;
     }
 
-    public ReservationDTO fromEntitytoDTO(Reservation reservation){
+    public ReservationDTO fromEntitytoDTO(Reservation reservation) {
         ReservationDTO reservationDTO = new ReservationDTO();
         reservationDTO.setId(reservation.getId());
         reservationDTO.setStartDate(reservation.getStartDate());

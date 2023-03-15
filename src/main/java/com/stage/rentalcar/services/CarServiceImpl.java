@@ -2,7 +2,6 @@ package com.stage.rentalcar.services;
 
 import com.stage.rentalcar.dto.CarDTO;
 import com.stage.rentalcar.entities.Car;
-import com.stage.rentalcar.entities.Reservation;
 import com.stage.rentalcar.mapper.CarMapper;
 import com.stage.rentalcar.repository.CarRepository;
 import com.stage.rentalcar.specification.FreeCarSpecification;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,7 +46,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void edit(CarDTO carDTO) {
-        if(getCarById(carDTO.getId())!=null){
+        if (getCarById(carDTO.getId()) != null) {
             carRepository.save(carMapper.fromDTOtoEntity(carDTO));
         } else {
             throw new RuntimeException("L'entità non esiste");

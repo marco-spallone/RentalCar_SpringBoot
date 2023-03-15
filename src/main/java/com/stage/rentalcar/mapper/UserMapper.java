@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapper {
 
-    public List<UserDTONoPass> getUsersDTO(List<User> users){
+    public List<UserDTONoPass> getUsersDTO(List<User> users) {
         return users.stream().map(this::fromEntitytoDTONoPass).collect(Collectors.toList());
     }
 
-    public User fromDTOtoEntity(UserDTO userDTO){
+    public User fromDTOtoEntity(UserDTO userDTO) {
         User user = new User();
         user.setId(userDTO.getId());
         user.setName(userDTO.getName());
@@ -26,17 +26,7 @@ public class UserMapper {
         return user;
     }
 
-    public UserDTO fromEntitytoDTO(User user){
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setName(user.getName());
-        userDTO.setSurname(user.getSurname());
-        userDTO.setUsername(user.getUsername());
-        userDTO.setPassword(user.getPassword());
-        return userDTO;
-    }
-
-    public UserDTONoPass fromEntitytoDTONoPass(User user){
+    public UserDTONoPass fromEntitytoDTONoPass(User user) {
         UserDTONoPass userDTONoPass = new UserDTONoPass();
         userDTONoPass.setId(user.getId());
         userDTONoPass.setName(user.getName());

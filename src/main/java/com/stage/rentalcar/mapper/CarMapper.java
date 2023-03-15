@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 @Component
 public class CarMapper {
 
-    public List<CarDTO> getCarsDTO(List<Car> cars){
+    public List<CarDTO> getCarsDTO(List<Car> cars) {
         return cars.stream().map(this::fromEntitytoDTO).collect(Collectors.toList());
     }
 
-    public Car fromDTOtoEntity(CarDTO carDTO){
+    public Car fromDTOtoEntity(CarDTO carDTO) {
         Car car = new Car();
         car.setId(carDTO.getId());
         car.setBrand(carDTO.getBrand());
@@ -25,7 +25,7 @@ public class CarMapper {
         return car;
     }
 
-    public CarDTO fromEntitytoDTO(Car car){
+    public CarDTO fromEntitytoDTO(Car car) {
         CarDTO carDTO = new CarDTO();
         carDTO.setId(car.getId());
         carDTO.setBrand(car.getBrand());
