@@ -66,9 +66,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void delReservation(Integer id) {
-        ReservationDTO reservationDTO = getReservationDTOById(id);
-        long days = ChronoUnit.DAYS.between(LocalDate.now(), reservationDTO.getStartDate());
-        if (days > 2) {
+        if (ChronoUnit.DAYS.between(LocalDate.now(), getReservationDTOById(id).getStartDate()) > 2) {
             reservationRepository.deleteById(id);
         } else {
             throw new RuntimeException("Mancano meno di due giorni alla data di inizio.");

@@ -32,7 +32,7 @@ public class CarController {
     }
 
     @GetMapping(value = "/free-cars", produces = "application/json")
-    public ResponseEntity<List<CarDTO>> getFreeCars(@RequestBody FreeCarRequest freeCarRequest){
+    public ResponseEntity<List<CarDTO>> getFreeCars(@RequestBody FreeCarRequest freeCarRequest) {
         return new ResponseEntity<>(carMapper.getCarsDTO(reservationService.getFreeCars(freeCarRequest)), HttpStatus.OK);
     }
 
