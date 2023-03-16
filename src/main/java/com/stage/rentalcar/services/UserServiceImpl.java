@@ -34,17 +34,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByCredentials(String username, String password) {
-        User user = getUserByUsername(username);
-        if(user!=null){
-            if(user.getPassword().equals(password)){
-                return user;
-            }
-        }
-        return null;
-    }
-
-    @Override
     public void insOrUpUser(UserDTO userDTO) {
         userRepository.save(userMapper.fromDTOtoEntity(userDTO));
     }

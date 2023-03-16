@@ -31,7 +31,7 @@ public class CustomDetailsManager implements UserDetailsService {
             myUserDetails.setUsername(s);
             myUserDetails.setId(user.getId());
             myUserDetails.setPassword(passwordEncoder.encode(user.getPassword()));
-            myUserDetails.setIsAdmin(user.isAdmin());
+            myUserDetails.setAdmin(user.isAdmin());
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             if(user.isAdmin()) {
                 authorities.add(new SimpleGrantedAuthority("ADMIN"));
