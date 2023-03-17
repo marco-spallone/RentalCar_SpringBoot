@@ -3,6 +3,7 @@ package com.stage.rentalcar.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,25 +25,25 @@ public class SecurityConfig {
     private final AuthTokenFilter authTokenFilter;
 
     @Bean
-    public RequestContextListener requestContextListener(){
+    public RequestContextListener requestContextListener() {
         return new RequestContextListener();
     }
 
-    private static final String[] ADMIN_MATCHER={
-            "/cars/post-car",
-            "/cars/delete/**",
+    private static final String[] ADMIN_MATCHER = {
+            "/cars/**",
             "/reservations/approve/**",
             "/reservations/decline/**",
-            "/users",
-            "/users/delete/**"
+            "/users/**",
     };
 
-    private static final String[] CUSTOMER_MATCHER={
+    private static final String[] CUSTOMER_MATCHER = {
+            "/users/me",
             "/cars/free-cars",
-            "/reservations/post-reservation",
+            "/reservations",
             "/reservations/delete/**",
             "/deleteReservation/**"
     };
+
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
@@ -56,8 +57,9 @@ public class SecurityConfig {
             try {
                 requests
                         .requestMatchers("/login").permitAll()
-                        .requestMatchers("/users/post-user").hasAnyAuthority("ADMIN", "CUSTOMER")
-                        .requestMatchers("/customers/userProfile").hasAnyAuthority("ADMIN", "CUSTOMER")
+                        .requestMatchers(HttpMethod.POST, "/users").hasAnyAuthority("ADMIN", "CUSTOMER")
+                        .requestMatchers(HttpMethod.POST, "/reservations").hasAuthority("CUSTOMER")
+                        .requestMatchers(HttpMethod.DELETE, "/reservations").hasAuthority("ADMIN")
                         .requestMatchers(ADMIN_MATCHER).hasAuthority("ADMIN")
                         .requestMatchers(CUSTOMER_MATCHER).hasAuthority("CUSTOMER")
                         .anyRequest().authenticated()

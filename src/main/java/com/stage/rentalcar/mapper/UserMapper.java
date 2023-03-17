@@ -32,7 +32,14 @@ public class UserMapper {
         userDTONoPass.setName(user.getName());
         userDTONoPass.setSurname(user.getSurname());
         userDTONoPass.setUsername(user.getUsername());
+        userDTONoPass.setAdmin(user.isAdmin());
         return userDTONoPass;
+    }
+
+    public void updateEntity(User user, UserDTO userDTO){
+        user.setName(userDTO.getName());
+        user.setSurname(userDTO.getSurname());
+        user.setUsername(userDTO.getUsername());
     }
 
 }

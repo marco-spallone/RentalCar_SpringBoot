@@ -9,7 +9,10 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     User getById(Integer id);
+
     User getByUsername(String s);
+
     User getByPassword(String s);
+
     List<User> getUsersByIsAdmin(boolean admin);
 }

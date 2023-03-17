@@ -1,8 +1,8 @@
 package com.stage.rentalcar.controllers;
 
 import com.stage.rentalcar.dto.CarDTO;
-import com.stage.rentalcar.mapper.CarMapper;
 import com.stage.rentalcar.dto.request.FreeCarRequest;
+import com.stage.rentalcar.mapper.CarMapper;
 import com.stage.rentalcar.services.CarService;
 import com.stage.rentalcar.services.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("cars")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class CarController {
     private final CarService carService;
     private final ReservationService reservationService;
@@ -37,13 +38,13 @@ public class CarController {
     }
 
 
-    @PostMapping(value = "/post-car", produces = "application/json")
+    @PostMapping(produces = "application/json")
     public ResponseEntity<?> insertOrUpdateCar(@RequestBody CarDTO carDTO) {
         carService.insOrUpCar(carDTO);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteCar(@PathVariable("id") Integer id) {
         carService.delCar(id);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);

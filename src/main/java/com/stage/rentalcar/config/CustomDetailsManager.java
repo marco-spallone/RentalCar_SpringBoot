@@ -2,7 +2,6 @@ package com.stage.rentalcar.config;
 
 import com.stage.rentalcar.entities.User;
 import com.stage.rentalcar.repository.UserRepository;
-import com.stage.rentalcar.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,13 +26,13 @@ public class CustomDetailsManager implements UserDetailsService {
         MyUserDetails myUserDetails;
         if (user != null) {
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            if(user.isAdmin()) {
+            if (user.isAdmin()) {
                 authorities.add(new SimpleGrantedAuthority("ADMIN"));
             } else {
                 authorities.add(new SimpleGrantedAuthority("CUSTOMER"));
             }
-             myUserDetails = MyUserDetails.builder()
-                    .id(user.getId()).username(s).password(passwordEncoder.encode(user.getPassword())).isAdmin(user.isAdmin())
+            myUserDetails = MyUserDetails.builder()
+                    .id(user.getId()).username(s).password(user.getPassword()).isAdmin(user.isAdmin())
                     .authorities(authorities).build();
         } else {
             throw new UsernameNotFoundException("User not found.");

@@ -1,6 +1,7 @@
 package com.stage.rentalcar.services;
 
 import com.stage.rentalcar.dto.ReservationDTO;
+import com.stage.rentalcar.dto.request.FreeCarRequest;
 import com.stage.rentalcar.entities.Car;
 import com.stage.rentalcar.entities.Reservation;
 import com.stage.rentalcar.entities.User;
@@ -8,7 +9,6 @@ import com.stage.rentalcar.mapper.ReservationMapper;
 import com.stage.rentalcar.repository.CarRepository;
 import com.stage.rentalcar.repository.ReservationRepository;
 import com.stage.rentalcar.repository.UserRepository;
-import com.stage.rentalcar.dto.request.FreeCarRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

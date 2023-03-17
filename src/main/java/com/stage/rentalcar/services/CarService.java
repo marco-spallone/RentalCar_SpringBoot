@@ -8,9 +8,14 @@ import java.util.List;
 
 public interface CarService {
     List<Car> getCars();
+
     Car getCarById(Integer id);
+
     List<Car> getFreeCars(LocalDate start, LocalDate end);
+
     void insOrUpCar(CarDTO carDTO);
+
     void edit(CarDTO carDTO);
+
     void delCar(Integer id);
 }

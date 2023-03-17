@@ -6,6 +6,9 @@ import com.stage.rentalcar.mapper.UserMapper;
 import com.stage.rentalcar.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getCustomers() {
@@ -30,7 +34,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void insOrUpUser(UserDTO userDTO) {
-        if(userDTO.getId()==null){
+        if (userDTO.getId() == null) {
+            userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             userRepository.save(userMapper.fromDTOtoEntity(userDTO));
         } else {
             edit(userDTO);
@@ -39,8 +44,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void edit(UserDTO userDTO) {
-        if (getUserById(userDTO.getId()) != null) {
-            userRepository.save(userMapper.fromDTOtoEntity(userDTO));
+        User user = getUserById(userDTO.getId());
+        if (user != null) {
+            userMapper.updateEntity(user, userDTO);
+            userRepository.save(user);
         } else {
             throw new RuntimeException("L'entità non esiste");
         }

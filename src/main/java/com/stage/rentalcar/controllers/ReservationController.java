@@ -2,7 +2,6 @@ package com.stage.rentalcar.controllers;
 
 import com.stage.rentalcar.dto.ReservationDTO;
 import com.stage.rentalcar.entities.User;
-import com.stage.rentalcar.mapper.CarMapper;
 import com.stage.rentalcar.mapper.ReservationMapper;
 import com.stage.rentalcar.services.ReservationService;
 import com.stage.rentalcar.services.UserService;
@@ -23,7 +22,6 @@ public class ReservationController {
     private final ReservationMapper reservationMapper;
 
     @GetMapping(value = "/user/{id}", produces = "application/json")
-    //PROVVISORIO, QUANDO SI HA L'UTENTE IN SESSIONE ELIMINARE PARAMETRO
     public ResponseEntity<List<ReservationDTO>> getAllReservationsForUser(@PathVariable("id") Integer id) {
         User user = userService.getUserById(id);
         return new ResponseEntity<>(reservationMapper.getReservationsDTO(reservationService.getReservationsForUser(user)), HttpStatus.OK);
@@ -34,7 +32,7 @@ public class ReservationController {
         return new ResponseEntity<>(reservationService.getReservationDTOById(id), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/post-reservation", produces = "application/json")
+    @PostMapping(produces = "application/json")
     public ResponseEntity<?> insOrUpReservation(@RequestBody ReservationDTO reservationDTO) {
         reservationService.insOrUpReservation(reservationDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -52,7 +50,7 @@ public class ReservationController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteReservation(@PathVariable("id") Integer id) {
         reservationService.delReservation(id);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);

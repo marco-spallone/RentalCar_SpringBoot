@@ -10,13 +10,13 @@ import java.util.Date;
 @Component
 @Slf4j
 public class JwtUtils {
-    private static final String jwtSecret="test";
+    private static final String jwtSecret = "test";
 
     public String generateJwtToken(Authentication authentication) {
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime()+ 100000L))
+                .setExpiration(new Date(new Date().getTime() + 100000L))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }

@@ -8,4 +8,5 @@ public class UserDTONoPass {
     private String name;
     private String surname;
     private String username;
+    private boolean isAdmin;
 }

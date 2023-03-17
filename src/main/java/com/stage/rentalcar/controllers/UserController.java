@@ -1,5 +1,6 @@
 package com.stage.rentalcar.controllers;
 
+import com.stage.rentalcar.config.MyUserDetails;
 import com.stage.rentalcar.dto.UserDTO;
 import com.stage.rentalcar.dto.UserDTONoPass;
 import com.stage.rentalcar.mapper.UserMapper;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,13 +34,18 @@ public class UserController {
         return new ResponseEntity<>(userMapper.fromEntitytoDTONoPass(userService.getUserById(id)), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/post-user", produces = "application/json")
+    @GetMapping(value = "/me", produces = "application/json")
+    public ResponseEntity<UserDTONoPass> getUserById(@AuthenticationPrincipal MyUserDetails myUserDetails) {
+        return new ResponseEntity<>(userMapper.fromEntitytoDTONoPass(userService.getUserById(myUserDetails.getId())), HttpStatus.OK);
+    }
+
+    @PostMapping(produces = "application/json")
     public ResponseEntity<?> insertOrUpdateUser(@RequestBody UserDTO userDTO) {
         userService.insOrUpUser(userDTO);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id) {
         userService.delUser(id);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
