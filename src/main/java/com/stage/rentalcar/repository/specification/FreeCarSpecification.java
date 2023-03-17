@@ -1,4 +1,4 @@
-package com.stage.rentalcar.specification;
+package com.stage.rentalcar.repository.specification;
 
 import com.stage.rentalcar.entities.Car;
 import com.stage.rentalcar.entities.Reservation;

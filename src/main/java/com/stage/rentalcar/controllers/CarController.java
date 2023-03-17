@@ -2,7 +2,7 @@ package com.stage.rentalcar.controllers;
 
 import com.stage.rentalcar.dto.CarDTO;
 import com.stage.rentalcar.mapper.CarMapper;
-import com.stage.rentalcar.request.FreeCarRequest;
+import com.stage.rentalcar.dto.request.FreeCarRequest;
 import com.stage.rentalcar.services.CarService;
 import com.stage.rentalcar.services.ReservationService;
 import lombok.RequiredArgsConstructor;

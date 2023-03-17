@@ -2,6 +2,8 @@ package com.stage.rentalcar.config;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Singular;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Data
+@Getter
+@Builder
 public class MyUserDetails implements UserDetails {
     private int id;
     private String username;

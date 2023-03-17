@@ -1,9 +1,8 @@
 package com.stage.rentalcar.controllers;
 
-import com.stage.rentalcar.entities.User;
-import com.stage.rentalcar.request.LoginRequest;
-import com.stage.rentalcar.services.UserService;
-import com.stage.rentalcar.utils.JwtUtils;
+import com.stage.rentalcar.dto.LoginResponseDTO;
+import com.stage.rentalcar.dto.request.LoginRequest;
+import com.stage.rentalcar.config.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,7 +30,11 @@ public class LoginController {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsername(), loginRequest.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwtUtils.generateJwtToken(authentication)).body("");
+            ResponseEntity response = ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwtUtils.generateJwtToken(authentication)).body("");
+            LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
+            loginResponseDTO.setKey("authorization: ");
+            loginResponseDTO.setValue(response.getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+            return ResponseEntity.ok().body(loginResponseDTO.getKey() + loginResponseDTO.getValue());
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }

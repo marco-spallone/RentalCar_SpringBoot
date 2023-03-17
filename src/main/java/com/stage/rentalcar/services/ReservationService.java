@@ -4,9 +4,8 @@ import com.stage.rentalcar.dto.ReservationDTO;
 import com.stage.rentalcar.entities.Car;
 import com.stage.rentalcar.entities.Reservation;
 import com.stage.rentalcar.entities.User;
-import com.stage.rentalcar.request.FreeCarRequest;
+import com.stage.rentalcar.dto.request.FreeCarRequest;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface ReservationService {

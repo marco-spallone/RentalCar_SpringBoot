@@ -4,7 +4,7 @@ import com.stage.rentalcar.dto.CarDTO;
 import com.stage.rentalcar.entities.Car;
 import com.stage.rentalcar.mapper.CarMapper;
 import com.stage.rentalcar.repository.CarRepository;
-import com.stage.rentalcar.specification.FreeCarSpecification;
+import com.stage.rentalcar.repository.specification.FreeCarSpecification;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

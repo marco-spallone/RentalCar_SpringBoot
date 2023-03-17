@@ -1,7 +1,9 @@
 package com.stage.rentalcar.config;
 
 import com.stage.rentalcar.entities.User;
+import com.stage.rentalcar.repository.UserRepository;
 import com.stage.rentalcar.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,32 +15,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CustomDetailsManager implements UserDetailsService {
-    UserService userService;
-    BCryptPasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-
-    public CustomDetailsManager(UserService userService) {
-        this.userService = userService;
-        this.passwordEncoder=new BCryptPasswordEncoder();
-    }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userService.getUserByUsername(s);
-        MyUserDetails myUserDetails = new MyUserDetails();
+        User user = userRepository.getByUsername(s);
+        MyUserDetails myUserDetails;
         if (user != null) {
-            myUserDetails.setUsername(s);
-            myUserDetails.setId(user.getId());
-            myUserDetails.setPassword(passwordEncoder.encode(user.getPassword()));
-            myUserDetails.setAdmin(user.isAdmin());
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             if(user.isAdmin()) {
                 authorities.add(new SimpleGrantedAuthority("ADMIN"));
             } else {
                 authorities.add(new SimpleGrantedAuthority("CUSTOMER"));
             }
-            myUserDetails.setAuthorities(authorities);
+             myUserDetails = MyUserDetails.builder()
+                    .id(user.getId()).username(s).password(passwordEncoder.encode(user.getPassword())).isAdmin(user.isAdmin())
+                    .authorities(authorities).build();
         } else {
             throw new UsernameNotFoundException("User not found.");
         }

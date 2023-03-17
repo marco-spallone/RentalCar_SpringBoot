@@ -29,13 +29,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        return userRepository.getByUsername(username);
+    public void insOrUpUser(UserDTO userDTO) {
+        if(userDTO.getId()==null){
+            userRepository.save(userMapper.fromDTOtoEntity(userDTO));
+        } else {
+            edit(userDTO);
+        }
     }
 
     @Override
-    public void insOrUpUser(UserDTO userDTO) {
-        userRepository.save(userMapper.fromDTOtoEntity(userDTO));
+    public void edit(UserDTO userDTO) {
+        if (getUserById(userDTO.getId()) != null) {
+            userRepository.save(userMapper.fromDTOtoEntity(userDTO));
+        } else {
+            throw new RuntimeException("L'entità non esiste");
+        }
     }
 
     @Override

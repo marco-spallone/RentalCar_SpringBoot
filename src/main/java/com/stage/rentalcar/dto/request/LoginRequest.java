@@ -1,4 +1,4 @@
-package com.stage.rentalcar.request;
+package com.stage.rentalcar.dto.request;
 
 import lombok.Data;
 

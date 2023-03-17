@@ -8,11 +8,9 @@ import com.stage.rentalcar.mapper.ReservationMapper;
 import com.stage.rentalcar.repository.CarRepository;
 import com.stage.rentalcar.repository.ReservationRepository;
 import com.stage.rentalcar.repository.UserRepository;
-import com.stage.rentalcar.request.FreeCarRequest;
+import com.stage.rentalcar.dto.request.FreeCarRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,7 +26,6 @@ public class ReservationServiceImpl implements ReservationService {
     private final UserRepository userRepository;
     private final CarRepository carRepository;
     private final CarService carService;
-    private static final Logger logger = LoggerFactory.getLogger(ReservationServiceImpl.class);
 
     @Override
     public List<Reservation> getReservationsForUser(User user) {

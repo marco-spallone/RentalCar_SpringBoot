@@ -8,8 +8,7 @@ import java.util.List;
 public interface UserService {
     List<User> getCustomers();
     User getUserById(Integer id);
-    User getUserByUsername(String username);
-
     void insOrUpUser(UserDTO userDTO);
+    void edit(UserDTO userDTO);
     void delUser(Integer id);
 }
