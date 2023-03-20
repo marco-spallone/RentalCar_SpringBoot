@@ -34,11 +34,6 @@ public class UserController {
         return new ResponseEntity<>(userMapper.fromEntitytoDTONoPass(userService.getUserById(id)), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/me", produces = "application/json")
-    public ResponseEntity<UserDTONoPass> getUserById(@AuthenticationPrincipal MyUserDetails myUserDetails) {
-        return new ResponseEntity<>(userMapper.fromEntitytoDTONoPass(userService.getUserById(myUserDetails.getId())), HttpStatus.OK);
-    }
-
     @PostMapping(produces = "application/json")
     public ResponseEntity<?> insertOrUpdateUser(@RequestBody UserDTO userDTO) {
         userService.insOrUpUser(userDTO);

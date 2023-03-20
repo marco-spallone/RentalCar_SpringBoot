@@ -1,6 +1,7 @@
 package com.stage.rentalcar.controllers;
 
 import com.stage.rentalcar.config.JwtUtils;
+import com.stage.rentalcar.config.MyUserDetails;
 import com.stage.rentalcar.dto.LoginResponseDTO;
 import com.stage.rentalcar.dto.request.LoginRequest;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -29,7 +27,8 @@ public class LoginController {
 
     @PostMapping(produces = "application/json")
     public ResponseEntity<?> performLogin(@RequestBody LoginRequest loginRequest) {
-        if (userDetailsService.loadUserByUsername(loginRequest.getUsername()) != null) {
+        MyUserDetails myUserDetails = (MyUserDetails) userDetailsService.loadUserByUsername(loginRequest.getUsername());
+        if (myUserDetails != null) {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsername(), loginRequest.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -37,6 +36,8 @@ public class LoginController {
             LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
             loginResponseDTO.setKey("authorization:");
             loginResponseDTO.setValue(response.getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+            loginResponseDTO.setAdmin(myUserDetails.isAdmin());
+            loginResponseDTO.setId(myUserDetails.getId());
             return ResponseEntity.ok().body(loginResponseDTO);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

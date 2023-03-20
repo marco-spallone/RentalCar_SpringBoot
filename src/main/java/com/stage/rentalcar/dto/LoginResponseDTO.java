@@ -6,4 +6,7 @@ import lombok.Data;
 public class LoginResponseDTO {
     private String key;
     private String value;
+    private boolean admin;
+    private Integer id;
+
 }

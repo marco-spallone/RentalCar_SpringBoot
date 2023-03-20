@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("cars")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 public class CarController {
     private final CarService carService;
     private final ReservationService reservationService;
@@ -32,8 +31,8 @@ public class CarController {
         return new ResponseEntity<>(carMapper.fromEntitytoDTO(carService.getCarById(id)), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/free-cars", produces = "application/json")
-    public ResponseEntity<List<CarDTO>> getFreeCars(@RequestBody FreeCarRequest freeCarRequest) {
+    @PostMapping(value = "/free-cars", produces = "application/json")
+    public ResponseEntity<List<CarDTO>> freeCars(@RequestBody FreeCarRequest freeCarRequest) {
         return new ResponseEntity<>(carMapper.getCarsDTO(reservationService.getFreeCars(freeCarRequest)), HttpStatus.OK);
     }
 
