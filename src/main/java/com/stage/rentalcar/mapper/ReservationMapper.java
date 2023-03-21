@@ -31,6 +31,7 @@ public class ReservationMapper {
         ReservationDTO reservationDTO = new ReservationDTO();
         reservationDTO.setId(reservation.getId());
         reservationDTO.setStartDate(reservation.getStartDate());
+        reservationDTO.setConfirmed(reservation.isConfirmed());
         reservationDTO.setEndDate(reservation.getEndDate());
         reservationDTO.setCarId(reservation.getCar().getId());
         reservationDTO.setUserId(reservation.getUser().getId());

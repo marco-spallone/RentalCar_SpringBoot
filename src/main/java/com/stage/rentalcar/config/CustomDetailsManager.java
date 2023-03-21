@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomDetailsManager implements UserDetailsService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
 
 
     @Override

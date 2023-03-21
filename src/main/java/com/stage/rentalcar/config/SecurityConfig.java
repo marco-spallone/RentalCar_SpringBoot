@@ -47,8 +47,7 @@ public class SecurityConfig {
 
     private static final String[] CUSTOMER_MATCHER = {
             "/reservations",
-            "/reservations/delete/**",
-            "/deleteReservation/**"
+            "/reservations/delete/**"
     };
 
     @Bean

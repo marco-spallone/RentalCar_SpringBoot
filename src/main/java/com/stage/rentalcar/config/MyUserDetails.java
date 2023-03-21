@@ -16,6 +16,10 @@ public class MyUserDetails implements UserDetails {
     private String password;
     private List<SimpleGrantedAuthority> authorities;
 
+    public void setUsername(String username){
+        this.username=username;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
