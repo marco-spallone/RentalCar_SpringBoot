@@ -1,16 +1,14 @@
 package com.stage.rentalcar.controllers;
 
-import com.stage.rentalcar.config.MyUserDetails;
 import com.stage.rentalcar.dto.UserDTO;
 import com.stage.rentalcar.dto.UserDTONoPass;
 import com.stage.rentalcar.mapper.UserMapper;
 import com.stage.rentalcar.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<?> insertOrUpdateUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> insertOrUpdateUser(@Valid @RequestBody UserDTO userDTO) {
         userService.insOrUpUser(userDTO);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
     }

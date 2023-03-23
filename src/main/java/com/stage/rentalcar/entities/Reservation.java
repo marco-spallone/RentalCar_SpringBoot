@@ -24,7 +24,7 @@ public class Reservation implements Serializable {
     private LocalDate endDate;
 
     @Column(name = "confirmed")
-    private boolean confirmed;
+    private Boolean confirmed;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user", referencedColumnName = "id")

@@ -21,7 +21,7 @@ public class ReservationMapper {
         reservation.setId(reservationDTO.getId());
         reservation.setStartDate(reservationDTO.getStartDate());
         reservation.setEndDate(reservationDTO.getEndDate());
-        reservation.setConfirmed(false);
+        reservation.setConfirmed(null);
         reservation.setUser(user);
         reservation.setCar(car);
         return reservation;
@@ -31,7 +31,7 @@ public class ReservationMapper {
         ReservationDTO reservationDTO = new ReservationDTO();
         reservationDTO.setId(reservation.getId());
         reservationDTO.setStartDate(reservation.getStartDate());
-        reservationDTO.setConfirmed(reservation.isConfirmed());
+        reservationDTO.setConfirmed(reservation.getConfirmed());
         reservationDTO.setEndDate(reservation.getEndDate());
         reservationDTO.setCarId(reservation.getCar().getId());
         reservationDTO.setUserId(reservation.getUser().getId());

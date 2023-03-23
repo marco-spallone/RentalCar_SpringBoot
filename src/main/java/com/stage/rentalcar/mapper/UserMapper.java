@@ -36,7 +36,7 @@ public class UserMapper {
         return userDTONoPass;
     }
 
-    public void updateEntity(User user, UserDTO userDTO){
+    public void updateEntity(User user, UserDTO userDTO) {
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
         user.setUsername(userDTO.getUsername());

@@ -5,7 +5,9 @@ import com.stage.rentalcar.entities.User;
 import com.stage.rentalcar.mapper.ReservationMapper;
 import com.stage.rentalcar.services.ReservationService;
 import com.stage.rentalcar.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("reservations")
 @RequiredArgsConstructor
+@Slf4j
 public class ReservationController {
     private final ReservationService reservationService;
     private final UserService userService;
@@ -33,7 +36,7 @@ public class ReservationController {
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<?> insOrUpReservation(@RequestBody ReservationDTO reservationDTO) {
+    public ResponseEntity<?> insOrUpReservation(@Valid @RequestBody ReservationDTO reservationDTO) {
         reservationService.insOrUpReservation(reservationDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

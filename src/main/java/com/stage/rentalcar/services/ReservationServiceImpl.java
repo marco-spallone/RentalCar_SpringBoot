@@ -11,6 +11,7 @@ import com.stage.rentalcar.repository.ReservationRepository;
 import com.stage.rentalcar.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final ReservationMapper reservationMapper;

@@ -5,6 +5,7 @@ import com.stage.rentalcar.dto.request.FreeCarRequest;
 import com.stage.rentalcar.mapper.CarMapper;
 import com.stage.rentalcar.services.CarService;
 import com.stage.rentalcar.services.ReservationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,13 +33,13 @@ public class CarController {
     }
 
     @PostMapping(value = "/free-cars", produces = "application/json")
-    public ResponseEntity<List<CarDTO>> freeCars(@RequestBody FreeCarRequest freeCarRequest) {
+    public ResponseEntity<List<CarDTO>> freeCars(@Valid @RequestBody FreeCarRequest freeCarRequest) {
         return new ResponseEntity<>(carMapper.getCarsDTO(reservationService.getFreeCars(freeCarRequest)), HttpStatus.OK);
     }
 
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<?> insertOrUpdateCar(@RequestBody CarDTO carDTO) {
+    public ResponseEntity<?> insertOrUpdateCar(@Valid @RequestBody CarDTO carDTO) {
         carService.insOrUpCar(carDTO);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
     }
