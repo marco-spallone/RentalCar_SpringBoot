@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 public class CarDTO {
     private Integer id;
-    @NotNull
+    @NotBlank
     private String brand;
-    @NotNull
+    @NotBlank
     private String model;
     @NotNull
     @Min(value = 1900)
@@ -17,8 +17,9 @@ public class CarDTO {
     @NotNull
     @PositiveOrZero
     private double price;
-    @NotNull
+    @NotBlank
     @Size(min = 7, max = 8)
+    @Pattern(regexp = "[A-Z][A-Z][0-9A-Z]*+")
     private String plate;
 
 }

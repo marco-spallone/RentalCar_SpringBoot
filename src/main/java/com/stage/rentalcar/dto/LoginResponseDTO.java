@@ -1,13 +1,14 @@
 package com.stage.rentalcar.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class LoginResponseDTO {
-    @NotNull
+    @NotBlank
     private String key;
-    @NotNull
+    @NotBlank
     private String value;
     @NotNull
     private boolean admin;
