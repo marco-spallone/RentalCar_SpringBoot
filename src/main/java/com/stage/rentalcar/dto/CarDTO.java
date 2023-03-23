@@ -19,7 +19,7 @@ public class CarDTO {
     private double price;
     @NotBlank
     @Size(min = 7, max = 8)
-    @Pattern(regexp = "[A-Z][A-Z][0-9A-Z]*+")
+    @Pattern(regexp = "[A-Z]{2}[0-9]{3}[A-Z]{2}")
     private String plate;
 
 }
